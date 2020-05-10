@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import Products from '../components/Products';
 import Product from "../components/Product";
-import { connect } from "react-redux";
+import { connect, useSelector ,useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
 import { addToCart, changeMessage } from '../actions/index';
 
-class ProductsContainer extends Component {
-    render() {
-        var { products } = this.props;
-        return (
-            <Products>
-                {this.showProducts(products)}
-            </Products>
-        );
-    }
+function ProductsContainer() {
 
-    showProducts = (products) => {
+    const products = useSelector(state => state.products)
+    const dispatch = useDispatch();
+
+    const showProducts = (products) => {
         var elmProducts = [];
         if (products) {
             elmProducts = products.map(
@@ -23,15 +18,51 @@ class ProductsContainer extends Component {
                     return <Product
                         key={product.id}
                         product={product}
-                        onAddToCart={this.props.onAddToCart}
-                        onChangeMessage={this.props.onChangeMessage}
+                        onAddToCart={ product => dispatch(addToCart(product))}
+                        onChangeMessage={ message => dispatch(changeMessage(message))}
                     />
                 }
             );
         }
         return elmProducts;
     }
+
+    return (
+        <Products>
+            {showProducts(products)}
+        </Products>
+    );
 }
+
+// export default ProductsContainer;
+
+// class ProductsContainer extends Component {
+//     render() {
+//         var { products } = this.props;
+//         return (
+//             <Products>
+//                 {this.showProducts(products)}
+//             </Products>
+//         );
+//     }
+
+//     showProducts = (products) => {
+//         var elmProducts = [];
+//         if (products) {
+//             elmProducts = products.map(
+//                 product => {
+//                     return <Product
+//                         key={product.id}
+//                         product={product}
+//                         onAddToCart={this.props.onAddToCart}
+//                         onChangeMessage={this.props.onChangeMessage}
+//                     />
+//                 }
+//             );
+//         }
+//         return elmProducts;
+//     }
+// }
 
 ProductsContainer.propTypes = {
     products: PropTypes.arrayOf(
@@ -48,13 +79,15 @@ ProductsContainer.propTypes = {
     onChangeMessage: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-    products: state.products
-});
+// const mapStateToProps = state => ({
+//     products: state.products
+// });
 
-const mapDispatchToProps = dispatch => ({
-    onAddToCart: product => dispatch(addToCart(product)),
-    onChangeMessage: message => dispatch(changeMessage(message))
-});
+// const mapDispatchToProps = dispatch => ({
+//     onAddToCart: product => dispatch(addToCart(product)),
+//     onChangeMessage: message => dispatch(changeMessage(message))
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsContainer);
+// export default connect(/*mapStateToProps, */mapDispatchToProps)(ProductsContainer);
+
+export default ProductsContainer;
