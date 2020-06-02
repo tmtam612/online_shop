@@ -1,94 +1,52 @@
-import React, { Component } from 'react';
+import React, { useCallback, useState } from 'react';
+import axios from "axios";
 import Products from '../components/Products';
 import Product from "../components/Product";
-import { connect, useSelector ,useDispatch} from "react-redux";
-import PropTypes from 'prop-types';
-import { addToCart, changeMessage, getListProducts } from '../actions/index';
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart, changeMessage } from '../actions/index';
+import {getListProducts} from '../actions/index';
 
 function ProductsContainer() {
+	const dispatch = useDispatch();
 
-    // const products = useSelector(state => state.products)
-    const dispatch = useDispatch();
-    const products = dispatch(getListProducts());
-    console.log(products);
-    const showProducts = (products) => {
-        var elmProducts = [];
-        if (products) {
-            elmProducts = products.map(
-                product => {
-                    return <Product
-                        key={product.id}
-                        product={product}
-                        onAddToCart={ product => dispatch(addToCart(product))}
-                        onChangeMessage={ message => dispatch(changeMessage(message))}
-                    />
-                }
-            );
-        }
-        return elmProducts;
-    }
+	const productStore = useSelector(state => state.products);
+	const [products, setProducts] = useState([]);
+	const getProducts = useCallback(
+		(data) => dispatch(getListProducts(data)),
+		[dispatch],
+	);
 
-    return (
-        <Products>
-            {showProducts(products)}
-        </Products>
-    );
+	React.useEffect(() => {
+		axios.get("http://127.0.0.1:8000/api/products/")
+			.then((response) => { 
+				getProducts(response.data);
+			}).catch((err) => console.log('err', err));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	React.useEffect(() => {
+		if (!productStore.products) {
+			return;
+		}
+
+		setProducts(productStore.products);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [productStore]);
+
+
+	return (
+		<Products>
+			{products.map((product) => (
+				<Product
+					key={product.id}
+					product={product}
+					onAddToCart={ product => dispatch(addToCart(product))}
+					onChangeMessage={ message => dispatch(changeMessage(message))}
+				/>
+			))}
+		</Products>
+	);
 }
 
-// export default ProductsContainer;
-
-// class ProductsContainer extends Component {
-//     render() {
-//         var { products } = this.props;
-//         return (
-//             <Products>
-//                 {this.showProducts(products)}
-//             </Products>
-//         );
-//     }
-
-//     showProducts = (products) => {
-//         var elmProducts = [];
-//         if (products) {
-//             elmProducts = products.map(
-//                 product => {
-//                     return <Product
-//                         key={product.id}
-//                         product={product}
-//                         onAddToCart={this.props.onAddToCart}
-//                         onChangeMessage={this.props.onChangeMessage}
-//                     />
-//                 }
-//             );
-//         }
-//         return elmProducts;
-//     }
-// }
-
-ProductsContainer.propTypes = {
-    products: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-            image: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired,
-            rating: PropTypes.number.isRequired,
-            inventory: PropTypes.number.isRequired
-        })
-    ).isRequired,
-    onChangeMessage: PropTypes.func.isRequired
-};
-
-// const mapStateToProps = state => ({
-//     products: state.products
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//     onAddToCart: product => dispatch(addToCart(product)),
-//     onChangeMessage: message => dispatch(changeMessage(message))
-// });
-
-// export default connect(/*mapStateToProps, */mapDispatchToProps)(ProductsContainer);
 
 export default ProductsContainer;

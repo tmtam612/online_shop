@@ -2,10 +2,19 @@ import * as types from '../constants/ActionType';
 import axios from "axios";
 
 export function loadProducts(){
-    return(dispatch)=>{
+    /* return(dispatch)=>{
         return axios.get("http://127.0.0.1:8000/api/products/").then((response)=>{ 
             dispatch(getListProducts(response.data));
         })
+    } */
+
+    try {
+        axios.get("http://127.0.0.1:8000/api/products/")
+            .then((response) => { 
+                getListProducts(response.data);
+            }).catch((err) => console.log('err', err));
+    } catch (error) {
+        console.log('err', error)
     }
 }
 

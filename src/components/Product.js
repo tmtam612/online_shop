@@ -25,7 +25,7 @@ const Product = (props) => {
             <div className="card text-center card-cascade narrower">
                 <div className="view overlay hm-white-slight z-depth-1">
                     <img
-                        src={product.image}
+                        src={`${process.env.PUBLIC_URL}/img/bff22bd75897b1c9e886.jpg`}
                         className="img-fluid" alt={product.name}
                     />
                     <a>
