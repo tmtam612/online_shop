@@ -1,4 +1,9 @@
 import * as types from '../constants/ActionType';
+import axios from "axios";
+
+export const action = () => ({
+    type: 'GET_LIST',
+});
 
 export const addToCart = (product, quantity) => ({
     type: types.ADD_TO_CART,
