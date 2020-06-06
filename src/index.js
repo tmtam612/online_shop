@@ -6,11 +6,11 @@ import appReducers from './reducers/index';
 import { Provider } from 'react-redux';
 import logger from 'redux-logger';
 import { applyMiddleware, createStore } from 'redux';
-
+import thunk from 'redux-thunk';
 // Logger with default options
 const store = createStore(
     appReducers,
-    applyMiddleware(logger)
+    applyMiddleware(logger, thunk)
   )
 
 ReactDOM.render(
