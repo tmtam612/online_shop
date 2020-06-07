@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Message from '../constants/Message';
 
 const Product = (props) => {
     const { product } = props;
@@ -17,7 +16,6 @@ const Product = (props) => {
 
     const onAddToCart = product => {
         props.onAddToCart(product);
-        props.onChangeMessage(Message.MSG_ADD_TO_CART_SUCCESS);
     }
 
     return (

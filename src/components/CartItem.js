@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as Message from '../constants/Message';
 
 class CartItem extends Component {
     render() {
@@ -59,13 +58,11 @@ class CartItem extends Component {
 
     onDelete = product => {
         this.props.onDeleteProductInCart(product);
-        this.props.onChangeMessage(Message.MSG_DELETE_PRODUCT_IN_CART_SUCCESS);
     }
 
     onUpdateCartItem = (product, quantity) => {
         if(quantity > 0){     
             this.props.onUpdateCartItem(product, quantity);
-            this.props.onChangeMessage(Message.MSG_UPDATE_CART_SUCCESS);
         }
     }
 }

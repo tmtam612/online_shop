@@ -5,9 +5,7 @@ import Cart from '../components/Cart';
 import CartItem from '../components/CartItem';
 import CartResult from '../components/CartResult';
 
-import * as Message from '../constants/Message';
-
-import { deleteProductInCart, updateProductInCart, changeMessage } from '../actions/index';
+import { deleteProductInCart, updateProductInCart } from '../actions/index';
 import { connect } from "react-redux";
 
 
@@ -24,7 +22,7 @@ class CartContainer extends Component {
     }
 
     showCartItem = cart => {
-        var result = <tr><td>{Message.MSG_CART_EMPTY}</td></tr>;
+        var result = <tr><td></td></tr>;
         if (cart.length > 0) {
             result = cart.map((item, index) => {
                 return <CartItem
@@ -33,7 +31,6 @@ class CartContainer extends Component {
                     index={index}
                     onDeleteProductInCart={this.props.onDeleteProductInCart}
                     onUpdateCartItem={this.props.onUpdateCartItem}
-                    onChangeMessage={this.props.onChangeMessage}
                 />
             });
         }
@@ -75,7 +72,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onDeleteProductInCart: product => dispatch(deleteProductInCart(product)),
     onUpdateCartItem: (product, quantity) => dispatch(updateProductInCart(product, quantity)),
-    onChangeMessage: message => dispatch(changeMessage(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);

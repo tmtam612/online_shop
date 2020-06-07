@@ -13,10 +13,6 @@ export const addToCart = (product, quantity) => ({
     quantity
 });
 
-export const changeMessage = message => ({
-    type: types.CHANGE_MESSAGE,
-    message
-});
 
 export const deleteProductInCart = product =>({
     type: types.DELETE_PRODUCT_IN_CART,

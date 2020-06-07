@@ -1,7 +1,7 @@
 import React, {  useState } from 'react';
 import Product from "../components/Product";
 import {useDispatch} from "react-redux";
-import {addToCart, changeMessage } from '../actions/index';
+import {addToCart } from '../actions/index';
 
 
 function ProductsContainer({props}) {
@@ -16,7 +16,6 @@ function ProductsContainer({props}) {
 					key={product.id}
 					product={product}
 					onAddToCart={ product => dispatch(addToCart(product))}
-					onChangeMessage={ message => dispatch(changeMessage(message))}
 				/>
 			))}
             </div >
