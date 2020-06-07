@@ -3,17 +3,6 @@ import React from 'react';
 const Product = (props) => {
     const { product } = props;
 
-    const showRating = (rating) => {
-        var result = [];
-        for (let i = 1; i <= rating; i++) {
-            result.push(<i key={i} className="fa fa-star"></i>)
-        }
-        for (let i = rating + 1; i <= 5; i++) {
-            result.push(<i key={i} className="fa fa-star-o"></i>)
-        }
-        return result;
-    }
-
     const onAddToCart = product => {
         props.onAddToCart(product);
     }
@@ -36,11 +25,6 @@ const Product = (props) => {
                             <a>{product.name}</a>
                         </strong>
                     </h4>
-                    <ul className="rating">
-                        <li>
-                            {showRating(product.rating)}
-                        </li>
-                    </ul>
                     <p className="card-text">
                         {product.description}
                     </p>
