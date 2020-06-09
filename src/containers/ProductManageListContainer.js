@@ -1,12 +1,24 @@
-import React, { useCallback, useState } from 'react';
+import React, {
+	useCallback,
+	useState
+} from 'react';
 import ProductManageList from '../components/ProductManageList';
-import { connect, useSelector, useDispatch } from "react-redux";
+import {
+	connect,
+	useSelector,
+	useDispatch
+} from "react-redux";
 import axios from "axios";
-import {addToCart, changeMessage } from '../actions/index';
-import {getListProducts} from '../actions/index';
+import {
+	addToCart,
+	changeMessage
+} from '../actions/index';
+import {
+	getListProducts
+} from '../actions/index';
 
 function ProductManageListContainer() {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const productStore = useSelector(state => state.products);
 	const [products, setProducts] = useState([]);
 	const getProducts = useCallback(
@@ -14,15 +26,15 @@ function ProductManageListContainer() {
 		[dispatch],
 	);
 
-    //Fetch lại data khi có sự thay đổi state.
+	//Fetch lại data khi có sự thay đổi state.
 	React.useEffect(() => {
 		axios.get("http://127.0.0.1:8000/api/products/")
-			.then((response) => { 
-                getProducts(response.data);
-                console.log("products",productStore);
+			.then((response) => {
+				getProducts(response.data);
+				console.log("products", productStore);
 			}).catch((err) => console.log('err', err));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [products]);
+	}, []);
 
 	React.useEffect(() => {
 		if (!productStore.products) {
@@ -33,11 +45,18 @@ function ProductManageListContainer() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productStore]);
 
-    return (
-        <div>
-            <ProductManageList products={products} setProducts={setProducts}/>
-        </div>
-    )
+	return ( <
+		div >
+		<
+		ProductManageList products = {
+			products
+		}
+		setProducts = {
+			setProducts
+		}
+		/> <
+		/div>
+	)
 }
 
 export default ProductManageListContainer;

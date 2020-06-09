@@ -71,9 +71,9 @@ function AddProductFormDialog(props) {
             data: dataForm,
         })
             .then(function (response) {
-                console.log(response);
+                console.log("response",response);
                 handleClose();
-                setProducts([...products, response]);
+                setProducts([...products, response.data]);
             })
             .catch(function (error) {
                 console.log(error);

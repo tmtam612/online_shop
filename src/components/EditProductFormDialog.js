@@ -27,7 +27,7 @@ function EditProductFormDialog(props) {
 
     console.log("edit props", props);
 
-    const { edit, onCloseEdit, onChangeEdit } = props;
+    const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts } = props;
 
     const { product } = edit;
 
@@ -35,6 +35,19 @@ function EditProductFormDialog(props) {
     //     setForm({ ...form, [event.target.id]: event.target.value });
     //     console.log(form)
     // }
+
+    const editProductElement = (e) => {
+        var tempProd = products.map(item => {
+            if (item.id == e.id) {
+                item = e;
+            }
+            return item;
+        });
+
+        console.log(tempProd);
+
+        setProducts(tempProd);
+    }
 
     const handleEditProduct = () => {
         const dataForm = product;
@@ -44,11 +57,12 @@ function EditProductFormDialog(props) {
 
         axios({
             method: 'put',
-            url: 'http://127.0.0.1:8000/api/products/'+dataForm.id,
+            url: 'http://127.0.0.1:8000/api/products/' + dataForm.id,
             data: JSON.parse(JSON.stringify(dataForm)),
         })
             .then(function (response) {
-                console.log(response);
+                console.log("Edit response", response);
+                editProductElement(response.data);
                 onCloseEdit();
             })
             .catch(function (error) {

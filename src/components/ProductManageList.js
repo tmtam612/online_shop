@@ -79,12 +79,13 @@ function ProductManageList(props) {
         console.log("after edit", edit);
     }
 
-    const handleDelete = (id) => {
+    const handleDeleteProduct = (id) => {
         axios({
             method: 'delete',
             url: 'http://127.0.0.1:8000/api/products/' + id,
         }).then(function (response) {
-            console.log(response);
+            const array = products.filter(item => item.id != id);
+            setProducts(array);
         })
             .catch(function (error) {
                 console.log(error);
@@ -93,7 +94,7 @@ function ProductManageList(props) {
     return (
         <div>
             <AddProductFormDialog products={products} setProducts={setProducts} />
-            <EditProductFormDialog products={products} setProducts={setProducts} edit={edit} onCloseEdit={handleCloseEdit} onChangeEdit={handleChangeEdit} />
+            <EditProductFormDialog products={products} setProducts={setProducts} edit={edit} setEdit={setEdit} onCloseEdit={handleCloseEdit} onChangeEdit={handleChangeEdit} />
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -131,7 +132,7 @@ function ProductManageList(props) {
                                     <Button
                                         variant="contained"
                                         color="secondary"
-                                        onClick={() => { handleDelete(prod.id) }}
+                                        onClick={() => { handleDeleteProduct(prod.id) }}
                                     >
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </Button>
