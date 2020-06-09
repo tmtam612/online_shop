@@ -24,6 +24,7 @@ export function getListProducts(products) {
         products: products,
     }
 }
+
 export const addToCart = (product, quantity) => ({
     type: types.ADD_TO_CART,
     product,
