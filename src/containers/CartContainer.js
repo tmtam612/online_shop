@@ -40,17 +40,19 @@ const CartContainer = () => {
     }
     const saveBill = (cart) => {
         var order = {};
-        cart.map((item, key) => {
-            return order[item.product.id] = item.quantity;
-        });
-        order = JSON.stringify(order);
-        axios.post('http://127.0.0.1:8000/api/orders', order)
-          .then(function (response) {
-            alert('thanh toán thành công');
-          })
-          .catch(function (error) {
-            alert('thanh toán thất bại');
-          });
+        if(cart.length > 0) {
+            cart.map((item, key) => {
+                return order[item.product.id] = item.quantity;
+            });
+            order = JSON.stringify(order);
+            axios.post('http://127.0.0.1:8000/api/orders', order)
+            .then(function (response) {
+                alert('thanh toán thành công');
+            })
+            .catch(function (error) {
+                alert('thanh toán thất bại');
+            });
+        }
     }
     return (
         <section className="section">
