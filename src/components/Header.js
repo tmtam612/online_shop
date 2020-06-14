@@ -1,6 +1,7 @@
 import React from 'react';
 import CartDetail from '../containers/CartDetail';
 import App from '../App';
+import ProductManageListContainer from '../containers/ProductManageListContainer';
 import {
     BrowserRouter as Router,
     Switch,
