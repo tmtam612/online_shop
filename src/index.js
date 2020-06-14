@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './components/Header';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import appReducers from './reducers/index';
@@ -16,7 +17,7 @@ const store = createStore(
 
 ReactDOM.render(
     <Provider store ={ store }>
-      <App></App>
+      <Header></Header>
     </Provider>,
     document.getElementById('root')
  );

@@ -3,8 +3,6 @@ const initialState = [];
 const products = (state = initialState, action) => {
     switch(action.type){
         case types.GET_LIST_PRODUCTS: {
-            console.log('action', action);
-            
             return {
                 ...state, 
                 products: action.products

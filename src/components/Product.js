@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {addToCart } from '../actions/index';
+import {useDispatch} from "react-redux";
 
 const Product = (props) => {
-    const { product } = props;
-
-    const onAddToCart = product => {
-        props.onAddToCart(product);
-    }
-
+    const [product, setproduct] = useState(props.product);
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        if(props) {
+            setproduct(props.product);
+        }
+    }, [props]);
     return (
         <div className="col-lg-4 col-md-6 mb-r">
             <div className="card text-center card-cascade narrower">
@@ -37,7 +40,7 @@ const Product = (props) => {
                                 title=""
                                 data-original-title="Add to Cart"
                             >
-                                <i onClick={() => onAddToCart(product)} className="fa fa-shopping-cart"></i>
+                                <i onClick={() => dispatch(addToCart(product))} className="fa fa-shopping-cart"></i>
                             </a>
                         </span>
                     </div>

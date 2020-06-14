@@ -1,11 +1,8 @@
 import React, {  useState } from 'react';
 import Product from "../components/Product";
-import {useDispatch} from "react-redux";
-import {addToCart } from '../actions/index';
 
 
 function ProductsContainer({props}) {
-	const dispatch = useDispatch();
 	const [products] = useState(props);
 	return (
 		<section className="section">
@@ -15,7 +12,6 @@ function ProductsContainer({props}) {
 				<Product
 					key={product.id}
 					product={product}
-					onAddToCart={ product => dispatch(addToCart(product))}
 				/>
 			))}
             </div >

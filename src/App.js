@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import Header from './components/Header';
 import ProductsContainer from './containers/ProductsContainer';
 import CartContainer from './containers/CartContainer';
 import axios from "axios";
@@ -36,7 +35,6 @@ function App() {
             {
                 products && products.length > 0 &&
                 <>
-                    <Header />
                     <main id="mainContainer">
                         <div className="container">
                             <ProductsContainer props={products}/>

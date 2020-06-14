@@ -1,5 +1,4 @@
 import * as types from '../constants/ActionType';
-import axios from "axios";
 
 export function getListProducts(products) {
     return{
