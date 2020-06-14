@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
 import ProductsContainer from './containers/ProductsContainer';
+import CartContainer from './containers/CartContainer';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {getListProducts} from './actions/index';
@@ -39,6 +40,7 @@ function App() {
                     <main id="mainContainer">
                         <div className="container">
                             <ProductsContainer props={products}/>
+                            <CartContainer />
                         </div>
                     </main>
                 </>

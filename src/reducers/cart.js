@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionType';
-var data = JSON.parse(localStorage.getItem('cart'));
+var data = [];
 var initialState = data ? data : [];
 
 const cart = (state = initialState, action) => {
@@ -21,7 +21,6 @@ const cart = (state = initialState, action) => {
                     quantity: 1
                 });
             }
-            localStorage.setItem('cart', JSON.stringify(cartAdd));
             return cartAdd;
         case types.DELETE_PRODUCT_IN_CART:
             var cartDel = [...state];
@@ -29,7 +28,6 @@ const cart = (state = initialState, action) => {
             if(index !== -1){
                 cartDel.splice(index, 1);
             }
-            localStorage.setItem('cart', JSON.stringify(cartDel));
             return cartDel;
         case types.UPDATE_PRODUCT_IN_CART:
             var cartUpdate = [...state];
@@ -40,7 +38,6 @@ const cart = (state = initialState, action) => {
                    quantity: action.quantity
                }
             }
-            localStorage.setItem('cart', JSON.stringify(cartUpdate));
             return cartUpdate;
         default:
             return state;
