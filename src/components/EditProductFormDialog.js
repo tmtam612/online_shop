@@ -10,17 +10,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    tdimage: {
-        maxWidth: 100,
-        maxHeight: 100,
-        overflowX: "scroll",
-    }
-});
-
 
 
 function EditProductFormDialog(props) {

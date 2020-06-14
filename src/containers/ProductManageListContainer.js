@@ -4,15 +4,10 @@ import React, {
 } from 'react';
 import ProductManageList from '../components/ProductManageList';
 import {
-	connect,
 	useSelector,
 	useDispatch
 } from "react-redux";
 import axios from "axios";
-import {
-	addToCart,
-	changeMessage
-} from '../actions/index';
 import {
 	getListProducts
 } from '../actions/index';
@@ -45,17 +40,10 @@ function ProductManageListContainer() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productStore]);
 
-	return ( <
-		div >
-		<
-		ProductManageList products = {
-			products
-		}
-		setProducts = {
-			setProducts
-		}
-		/> <
-		/div>
+	return ( 
+		<div className="margin-top">
+			<ProductManageList products = {products} setProducts = {setProducts}/>
+		</div>
 	)
 }
 

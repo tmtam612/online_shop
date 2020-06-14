@@ -23,8 +23,11 @@ const Header = () => {
                     </div>
 
                     <ul className="nav navbar-nav nav-flex-icons ml-auto">
-                        <li className="nav-item dropdown">
+                        <li className="nav-item dropdown margin-right">
                             <i className="fa fa-shopping-cart"></i><Link to="/cartDetail"> Xem Giỏ Hàng</Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <i className="fa fa-bandcamp"></i><Link to="admin/products"> Quản Lý Hàng Hóa</Link>
                         </li>
                     </ul>
 
