@@ -1,81 +1,82 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-import Cart from '../components/Cart';
 import CartItem from '../components/CartItem';
-import CartResult from '../components/CartResult';
+import { useSelector} from "react-redux";
 
-import * as Message from '../constants/Message';
-
-import { deleteProductInCart, updateProductInCart, changeMessage } from '../actions/index';
-import { connect } from "react-redux";
-
-
-
-class CartContainer extends Component {
-    render() {
-        var { cart } = this.props;
-        return (
-            <Cart>
-                {this.showCartItem(cart)}
-                {this.showTotalAmount(cart)}
-            </Cart>
-        );
-    }
-
-    showCartItem = cart => {
-        var result = <tr><td>{Message.MSG_CART_EMPTY}</td></tr>;
+const CartContainer = () => {
+    console.log(1);
+    const [cart, setCart] = useState([]);
+    const cartStore = useSelector( state => state.cart);
+    React.useEffect(() => {
+        setCart(cartStore);
+    }, [cartStore]);
+    const showCartItem = (cart) => {
+        console.log(cart);
+        var result = <tr><td></td></tr>;
         if (cart.length > 0) {
             result = cart.map((item, index) => {
                 return <CartItem
                     key={index}
                     item={item}
                     index={index}
-                    onDeleteProductInCart={this.props.onDeleteProductInCart}
-                    onUpdateCartItem={this.props.onUpdateCartItem}
-                    onChangeMessage={this.props.onChangeMessage}
                 />
             });
         }
         return result;
     }
-
-    showTotalAmount = cart => {
-        var result = null;
-        if (cart.length > 0) {
-            result = <CartResult cart={cart} />;
+    const showTotalAmount = cart => {
+        var total = 0;
+        if(cart.length > 0){
+            cart.forEach(element => {
+                if(element.quantity > 0) {
+                    return total+= element.product.price * element.quantity;
+                } else {
+                    return total;
+                }
+                
+            });
         }
-        return result;
+        return total;
     }
+    return (
+        <section className="section">
+            <div className="table-responsive">
+                <table className="table product-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sản Phẩm</th>
+                            <th>Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Tổng Cộng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>   
+                        {showCartItem(cart)}
+                        <tr>
+                            <td colSpan="3"></td>
+                            <td>
+                                <h4>
+                                    <strong>Tổng Tiền</strong>
+                                </h4>
+                            </td>
+                            <td>
+                                <h4>
+                                    <strong>{showTotalAmount(cart)}$</strong>
+                                </h4>
+                            </td>
+                            <td colSpan="3">
+                                <button type="button" className="btn btn-primary waves-effect waves-light">Complete purchase
+                                    <i className="fa fa-angle-right right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    );
 }
 
-CartContainer.propTypes = {
-    cart: PropTypes.arrayOf(
-        PropTypes.shape({
-            product: PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                name: PropTypes.string.isRequired,
-                description: PropTypes.string.isRequired,
-                image: PropTypes.string.isRequired,
-                price: PropTypes.number.isRequired,
-                rating: PropTypes.number.isRequired,
-                inventory: PropTypes.number.isRequired
-            }),
-            quantity: PropTypes.number.isRequired
-        })
-    ).isRequired,
-    onDeleteProductInCart: PropTypes.func.isRequired,
-    onUpdateCartItem: PropTypes.func.isRequired
-};
-
-const mapStateToProps = state => ({
-    cart: state.cart
-});
-
-const mapDispatchToProps = dispatch => ({
-    onDeleteProductInCart: product => dispatch(deleteProductInCart(product)),
-    onUpdateCartItem: (product, quantity) => dispatch(updateProductInCart(product, quantity)),
-    onChangeMessage: message => dispatch(changeMessage(message))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);
+export default CartContainer;

@@ -1,47 +1,43 @@
 import * as types from '../constants/ActionType';
-var data = JSON.parse(localStorage.getItem('cart'));
+var data = [];
 var initialState = data ? data : [];
 
-const cart = (state = initialState, action) => {
+const cartRedux = (state = initialState, action) => {
     var index = -1;
     var {product} = action;
+    console.log(action);
+    var cart = [...state];
     switch (action.type) {
         case types.ADD_TO_CART:
             index = findIndex(state, product);
-            var cartAdd = [...state];
             if(index !== -1){
-                cartAdd[index] = {
-                    ...cartAdd[index],
-                    quantity: cartAdd[index].quantity + 1
+                cart[index] = {
+                    ...cart[index],
+                    quantity: cart[index].quantity + 1
                 }
             }
             else {
-                cartAdd.push({
+                cart.push({
                     product,
                     quantity: 1
                 });
             }
-            localStorage.setItem('cart', JSON.stringify(cartAdd));
-            return cartAdd;
+            return cart;
         case types.DELETE_PRODUCT_IN_CART:
-            var cartDel = [...state];
             index = findIndex(state, product);
             if(index !== -1){
-                cartDel.splice(index, 1);
+                cart.splice(index, 1);
             }
-            localStorage.setItem('cart', JSON.stringify(cartDel));
-            return cartDel;
+            return cart;
         case types.UPDATE_PRODUCT_IN_CART:
-            var cartUpdate = [...state];
             index = findIndex(state, product);
             if(index !== -1){
-               cartUpdate[index] = {
-                   ...cartUpdate[index],
+                cart[index] = {
+                   ...cart[index],
                    quantity: action.quantity
                }
             }
-            localStorage.setItem('cart', JSON.stringify(cartUpdate));
-            return cartUpdate;
+            return cart;
         default:
             return state;
     }
@@ -59,4 +55,4 @@ var findIndex = (cart, product) => {
     return index;
 }
 
-export default cart;
+export default cartRedux;

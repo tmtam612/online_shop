@@ -1,41 +1,51 @@
-import React, { Component } from 'react';
-import Header from './components/Header';
+import React, { useState, useCallback } from 'react';
 import ProductsContainer from './containers/ProductsContainer';
-import MessageContainer from './containers/MessageContainer';
 import CartContainer from './containers/CartContainer';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-import ProductManageListContainer from './containers/ProductManageListContainer';
+import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {getListProducts} from './actions/index';
 
-class App extends Component {
-    render() {
-        return (
-            <div>
-                <Header />
-                <main id="mainContainer">
-                    <Router>
-                        <Switch>
-                            <Route path="/admin/products">
-                                <ProductManageListContainer />
-                            </Route>
-                            <Route path="/">
+function App() {
+    const dispatch = useDispatch();
+    const productStore = useSelector(state => state.products);
+    const [products, setProducts] = useState([]);
+	const getProducts = useCallback(
+		(data) => dispatch(getListProducts(data)),
+		[dispatch],
+	);
+    React.useEffect(() => {
+		axios.get("http://127.0.0.1:8000/api/products/")
+			.then((response) => { 
+				getProducts(response.data);
+			}).catch((err) => console.log('err', err));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-                                <div className="container">
-                                    <ProductsContainer />
-                                    <MessageContainer />
-                                    <CartContainer />
-                                </div>
-                            </Route>
-                        </Switch>
-                    </Router>
-                </main>
-            </div>
-        );
-    }
+    React.useEffect(() => {
+		if (!productStore.products) {
+			return;
+		}
+
+		setProducts(productStore.products);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productStore]);
+
+    return (
+        <div>
+            {
+                products && products.length > 0 &&
+                <>
+                    <main id="mainContainer">
+                        <div className="container">
+                            <ProductsContainer props={products}/>
+                            <CartContainer />
+                        </div>
+                    </main>
+                </>
+            }
+        </div>
+    );
+    
 }
 
 export default App;
