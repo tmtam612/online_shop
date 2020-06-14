@@ -10,6 +10,12 @@ const Product = (props) => {
             setproduct(props.product);
         }
     }, [props]);
+    const addProduct = (product) => {
+        if(product.inventory > 0) {
+            product.inventory -= 1;
+            dispatch(addToCart(product));
+        }
+    }
     return (
         <div className="col-lg-4 col-md-6 mb-r">
             <div className="card text-center card-cascade narrower">
@@ -33,6 +39,7 @@ const Product = (props) => {
                     </p>
                     <div className="card-footer">
                         <span className="left">{product.price}$</span>
+                        <span className="left">{product.inventory}</span>
                         <span className="right">
                             <a className="btn-floating blue-gradient"
                                 data-toggle="tooltip"
@@ -40,7 +47,7 @@ const Product = (props) => {
                                 title=""
                                 data-original-title="Add to Cart"
                             >
-                                <i onClick={() => dispatch(addToCart(product))} className="fa fa-shopping-cart"></i>
+                                <i onClick={() => addProduct(product)} className="fa fa-shopping-cart"></i>
                             </a>
                         </span>
                     </div>

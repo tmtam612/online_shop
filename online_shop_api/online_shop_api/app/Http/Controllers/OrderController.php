@@ -35,9 +35,15 @@ class OrderController extends Controller
         foreach ($listProducts as $idProduct => $quantityOrder) {
             $productOrder = Product::find($idProduct);
 
-            $productOrder->inventory -= $quantityOrder;
+            // Check quantity enough
+            if($productOrder->inventory < $quantityOrder) {
+                DB::rollBack();
+                return 204;
+            } else {
+                $productOrder->inventory -= $quantityOrder;
                 $total += $productOrder->price * $quantityOrder;
                 $productOrder->save();
+            }
             
             LineItem::create([
                 'id_product' => $idProduct,

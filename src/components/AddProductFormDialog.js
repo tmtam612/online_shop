@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -9,22 +7,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    tdimage: {
-        maxWidth: 100,
-        maxHeight: 100,
-        overflowX: "scroll",
-    }
-});
+import {useDispatch} from "react-redux";
+import {getListProducts} from '../actions/index';
 
 
 
 function AddProductFormDialog(props) {
 
+    const dispatch = useDispatch();
     const { products, setProducts } = props;
 
     const defaultFormAddValue = {
@@ -54,7 +44,6 @@ function AddProductFormDialog(props) {
 
     const handleChange = (event) => {
         setForm({ ...form, [event.target.id]: event.target.value });
-        console.log(form)
     }
 
     const handleAddProduct = () => {
@@ -71,12 +60,14 @@ function AddProductFormDialog(props) {
             data: dataForm,
         })
             .then(function (response) {
-                console.log("response",response);
                 handleClose();
                 setProducts([...products, response.data]);
+                axios.get("http://127.0.0.1:8000/api/products/")
+                .then((response) => { 
+                    dispatch(getListProducts(response.data));
+                }).catch((err) => console.log('err', err));
             })
             .catch(function (error) {
-                console.log(error);
             });
 
     }
@@ -88,7 +79,7 @@ function AddProductFormDialog(props) {
                 onClick={handleClickOpen}
                 style={{ backgroundColor: "#8bc34a", float: "right" }}
             >
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i className="fa fa-plus" aria-hidden="true"></i>
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Product</DialogTitle>

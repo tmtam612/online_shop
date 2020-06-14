@@ -30,8 +30,6 @@ const useStyles = makeStyles({
 
 function ProductManageList(props) {
 
-    console.log("alooo", props);
-
     const { products, setProducts } = props;
     const classes = useStyles();
 
@@ -75,8 +73,6 @@ function ProductManageList(props) {
                 [event.target.id]: event.target.value,
             }
         })
-
-        console.log("after edit", edit);
     }
 
     const handleDeleteProduct = (id) => {
@@ -88,15 +84,14 @@ function ProductManageList(props) {
             setProducts(array);
         })
             .catch(function (error) {
-                console.log(error);
             });
     }
     return (
-        <div>
+        <>
             <AddProductFormDialog products={products} setProducts={setProducts} />
             <EditProductFormDialog products={products} setProducts={setProducts} edit={edit} setEdit={setEdit} onCloseEdit={handleCloseEdit} onChangeEdit={handleChangeEdit} />
             <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+                <Table className={classes.table} >
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
@@ -119,14 +114,14 @@ function ProductManageList(props) {
                                 <TableCell align="right">{prod.price}</TableCell>
                                 <TableCell align="right">{prod.rating}</TableCell>
                                 <TableCell align="left">
-                                    <textarea disabled>{prod.image}</textarea>
+                                    <textarea disabled value={prod.image}></textarea>
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="contained"
                                         onClick={() => { handleOpenEdit(prod) }}
                                     >
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        <i className="fa fa-pencil" aria-hidden="true"></i>
                                     </Button>
 
                                     <Button
@@ -134,7 +129,7 @@ function ProductManageList(props) {
                                         color="secondary"
                                         onClick={() => { handleDeleteProduct(prod.id) }}
                                     >
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <i className="fa fa-trash" aria-hidden="true"></i>
                                     </Button>
                                 </TableCell>
                             </TableRow>
@@ -155,7 +150,7 @@ function ProductManageList(props) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </div>
+        </>
     )
 }
 

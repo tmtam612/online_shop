@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -9,21 +7,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
-
+import {useDispatch} from "react-redux";
+import {getListProducts} from '../actions/index';
 
 
 function EditProductFormDialog(props) {
 
-    console.log("edit props", props);
-
+    const dispatch = useDispatch();
     const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts } = props;
 
     const { product } = edit;
-
-    // const handleChange = (event) => {
-    //     setForm({ ...form, [event.target.id]: event.target.value });
-    //     console.log(form)
-    // }
 
     const editProductElement = (e) => {
         var tempProd = products.map(item => {
@@ -33,9 +26,12 @@ function EditProductFormDialog(props) {
             return item;
         });
 
-        console.log(tempProd);
-
         setProducts(tempProd);
+        axios.get("http://127.0.0.1:8000/api/products/")
+        .then((response) => { 
+            dispatch(getListProducts(response.data));
+        }).catch((err) => console.log('err', err));
+       
     }
 
     const handleEditProduct = () => {
@@ -50,12 +46,10 @@ function EditProductFormDialog(props) {
             data: JSON.parse(JSON.stringify(dataForm)),
         })
             .then(function (response) {
-                console.log("Edit response", response);
                 editProductElement(response.data);
                 onCloseEdit();
             })
             .catch(function (error) {
-                console.log(error);
             });
     }
 

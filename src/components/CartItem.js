@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateProductInCart, deleteProductInCart } from '../actions/index';
+import {addToCart } from '../actions/index';
 const CartItem = (props) => {
     const dispatch = useDispatch();
     const [item, setitem] = useState(props.item)
@@ -12,6 +13,21 @@ const CartItem = (props) => {
             setitem(props.item);
         }
     }, [props])
+    const addProductInCart = (product) => {
+        if(product.inventory > 0) {
+            product.inventory -= 1;
+            dispatch(addToCart(product));
+        }
+    }
+    const deleteProductInCart = (product, quantity) => {
+        if(quantity > 0) {
+            product.inventory += 1;
+            dispatch(updateProductInCart(product, quantity - 1));
+        } else if (quantity == 0) {
+            
+        }
+    }
+   
     return (
         <tr>
             <th scope="row">
@@ -30,14 +46,14 @@ const CartItem = (props) => {
                     <label 
                         className="btn btn-sm btn-primary
                         btn-rounded waves-effect waves-light"
-                        onClick={() => dispatch(updateProductInCart(item.product, item.quantity - 1))}
+                        onClick={() => deleteProductInCart(item.product, item.quantity)}
                     >
                         <a href="#">—</a>
                     </label>
                     <label 
                         className="btn btn-sm btn-primary
                         btn-rounded waves-effect waves-light"
-                        onClick={() => dispatch(updateProductInCart(item.product, item.quantity + 1))}
+                        onClick={() => addProductInCart(item.product)}
                     >
                         <a href="#">+</a>
                     </label>
