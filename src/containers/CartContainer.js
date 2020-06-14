@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import axios from "axios";
 import CartItem from '../components/CartItem';
 import { useSelector} from "react-redux";
 
@@ -38,6 +38,16 @@ const CartContainer = () => {
         }
         return total;
     }
+    const saveBill = cart => {
+        var total = 0;
+        if(cart.length > 0){
+            axios.post("http://127.0.0.1:8000/api/orders")
+			.then((response) => { 
+				console.log(response);
+			}).catch((err) => console.log('err', err));
+        }
+        return total;
+    }
     return (
         <section className="section">
             <div className="table-responsive">
@@ -67,7 +77,7 @@ const CartContainer = () => {
                                 </h4>
                             </td>
                             <td colSpan="3">
-                                <button type="button" className="btn btn-primary waves-effect waves-light">Complete purchase
+                                <button onclick = {() => saveBill(cart)} type="button" className="btn btn-primary waves-effect waves-light">Complete purchase
                                     <i className="fa fa-angle-right right"></i>
                                 </button>
                             </td>
