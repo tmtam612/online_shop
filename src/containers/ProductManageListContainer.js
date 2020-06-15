@@ -45,17 +45,12 @@ function ProductManageListContainer() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productStore]);
 
-	return ( <
-		div >
-		<
-		ProductManageList products = {
-			products
-		}
-		setProducts = {
-			setProducts
-		}
-		/> <
-		/div>
+	return (
+		<div >
+			<ProductManageList products={products}
+				setProducts={setProducts}
+			/>
+		</div>
 	)
 }
 

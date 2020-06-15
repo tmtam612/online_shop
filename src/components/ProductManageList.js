@@ -13,6 +13,11 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -37,11 +42,25 @@ function ProductManageList(props) {
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+    const [deleteDialog,setDeleteDialog] = React.useState({
+        open: false,
+        id: ''
+    })
     const [edit, setEdit] = React.useState({
         open: false,
+        status: 'info',
+        text : 'Edit product',
         product: {},
     })
+
+    const checkPropertiesEmpty = obj =>{
+        for(var key in obj) {
+            if(obj[key] === "") {
+               return false;
+            }
+        }
+        return true;
+    }
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -54,6 +73,7 @@ function ProductManageList(props) {
 
     const handleOpenEdit = prod => {
         setEdit({
+            ...edit,
             open: true,
             product: prod,
         })
@@ -63,6 +83,8 @@ function ProductManageList(props) {
     const handleCloseEdit = () => {
         setEdit({
             ...edit,
+            status : 'info',
+            text: 'Edit product',
             open: false,
         })
     }
@@ -79,13 +101,28 @@ function ProductManageList(props) {
         console.log("after edit", edit);
     }
 
-    const handleDeleteProduct = (id) => {
+    const handleOpenDeleteDialog = (id) => {
+        setDeleteDialog({
+            open: true,
+            id,
+        });
+    }
+
+    const handleCloseDeleteDialog = () => {
+        setDeleteDialog({
+            ...deleteDialog,
+            open:false,
+        });
+    }
+
+    const handleDeleteProduct = () => {
         axios({
             method: 'delete',
-            url: 'http://127.0.0.1:8000/api/products/' + id,
+            url: 'http://127.0.0.1:8000/api/products/' + deleteDialog.id,
         }).then(function (response) {
-            const array = products.filter(item => item.id != id);
+            const array = products.filter(item => item.id != deleteDialog.id);
             setProducts(array);
+            handleCloseDeleteDialog();
         })
             .catch(function (error) {
                 console.log(error);
@@ -93,8 +130,39 @@ function ProductManageList(props) {
     }
     return (
         <div>
-            <AddProductFormDialog products={products} setProducts={setProducts} />
-            <EditProductFormDialog products={products} setProducts={setProducts} edit={edit} setEdit={setEdit} onCloseEdit={handleCloseEdit} onChangeEdit={handleChangeEdit} />
+            <AddProductFormDialog
+                products={products}
+                setProducts={setProducts} 
+                onCheckPropertiesEmpty={checkPropertiesEmpty}
+                />
+            <EditProductFormDialog
+                products={products}
+                setProducts={setProducts}
+                edit={edit} setEdit={setEdit}
+                onCloseEdit={handleCloseEdit}
+                onChangeEdit={handleChangeEdit} 
+                onCheckPropertiesEmpty={checkPropertiesEmpty}/>
+            <Dialog
+                open={deleteDialog.open}
+                onClose={handleCloseDeleteDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Are you sure you want to delete this product ?
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCloseDeleteDialog} color="primary">
+                    No
+                </Button>
+                <Button onClick={handleDeleteProduct} color="primary" autoFocus>
+                    Yes
+                </Button>
+                </DialogActions>
+            </Dialog>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -119,22 +187,22 @@ function ProductManageList(props) {
                                 <TableCell align="right">{prod.price}</TableCell>
                                 <TableCell align="right">{prod.rating}</TableCell>
                                 <TableCell align="left">
-                                    <textarea disabled>{prod.image}</textarea>
+                                    <textarea disabled value={prod.image}></textarea>
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="contained"
                                         onClick={() => { handleOpenEdit(prod) }}
                                     >
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        <i className="fa fa-pencil" aria-hidden="true"></i>
                                     </Button>
 
                                     <Button
                                         variant="contained"
                                         color="secondary"
-                                        onClick={() => { handleDeleteProduct(prod.id) }}
+                                        onClick={() => { handleOpenDeleteDialog(prod.id) }}
                                     >
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <i className="fa fa-trash" aria-hidden="true"></i>
                                     </Button>
                                 </TableCell>
                             </TableRow>

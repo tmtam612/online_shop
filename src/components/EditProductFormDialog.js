@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -27,9 +28,14 @@ function EditProductFormDialog(props) {
 
     console.log("edit props", props);
 
-    const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts } = props;
+    const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts, onCheckPropertiesEmpty } = props;
 
     const { product } = edit;
+
+    const defaultFormState = {
+        status : 'info',
+        text: "Edit Product '"+product.id+"'"
+    }
 
     // const handleChange = (event) => {
     //     setForm({ ...form, [event.target.id]: event.target.value });
@@ -50,33 +56,49 @@ function EditProductFormDialog(props) {
     }
 
     const handleEditProduct = () => {
-        const dataForm = product;
-        const items = dataForm.image.split('\\');
-        if (items.length > 0)
-            dataForm.image = items[items.length - 1];
+        if(onCheckPropertiesEmpty(product)){
+            const dataForm = product;
+            const items = dataForm.image.split('\\');
+            if (items.length > 0)
+                dataForm.image = items[items.length - 1];
 
-        axios({
-            method: 'put',
-            url: 'http://127.0.0.1:8000/api/products/' + dataForm.id,
-            data: JSON.parse(JSON.stringify(dataForm)),
-        })
-            .then(function (response) {
-                console.log("Edit response", response);
-                editProductElement(response.data);
-                onCloseEdit();
+            axios({
+                method: 'put',
+                url: 'http://127.0.0.1:8000/api/products/' + dataForm.id,
+                data: JSON.parse(JSON.stringify(dataForm)),
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log("Edit response", response);
+                    editProductElement(response.data);
+                    onCloseEdit();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    setEdit({
+                        ...edit,
+                        status: 'error',
+                        text: 'Failed to edit product !\nPlease try again .'
+                    })
+                });
+            
+        }else{
+            setEdit({
+                ...edit,
+                status: 'error',
+                text: 'Please fill in required fields'
+            })
+        }
     }
-
+    
     return (
         <div>
             <Dialog open={edit.open} onClose={onCloseEdit} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Product</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Add 1 more product.
+                        <Alert severity={edit.status}>
+                            {edit.text}
+                        </Alert>
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -85,6 +107,7 @@ function EditProductFormDialog(props) {
                         label="Name"
                         type="text"
                         fullWidth
+                        required
                         value={product.name}
                         onChange={onChangeEdit} />
                     <TextField
