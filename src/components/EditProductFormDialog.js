@@ -11,17 +11,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    tdimage: {
-        maxWidth: 100,
-        maxHeight: 100,
-        overflowX: "scroll",
-    }
-});
-
 
 
 function EditProductFormDialog(props) {
@@ -56,16 +45,30 @@ function EditProductFormDialog(props) {
     }
 
     const handleEditProduct = () => {
+        
+        // const dataForm = product;
+        // const items = dataForm.image.split('\\');
+        // if (items.length > 0)
+        //     dataForm.image = items[items.length - 1];
         if(onCheckPropertiesEmpty(product)){
-            const dataForm = product;
-            const items = dataForm.image.split('\\');
-            if (items.length > 0)
-                dataForm.image = items[items.length - 1];
+            var dataForm = new FormData();
 
+            for (var key in product) {
+                dataForm.append(key, product[key]);
+            }
+
+            // axios({
+            //     method: 'put',
+            //     url: 'http://127.0.0.1:8000/api/products/' + ,
+            //     data: JSON.parse(JSON.stringify(dataForm)),
+            // })
             axios({
-                method: 'put',
-                url: 'http://127.0.0.1:8000/api/products/' + dataForm.id,
-                data: JSON.parse(JSON.stringify(dataForm)),
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/products/' + product.id,
+                data: dataForm,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
             })
                 .then(function (response) {
                     console.log("Edit response", response);

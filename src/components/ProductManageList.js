@@ -90,14 +90,23 @@ function ProductManageList(props) {
     }
 
     const handleChangeEdit = (event) => {
-        setEdit({
-            ...edit,
-            product: {
-                ...edit.product,
-                [event.target.id]: event.target.value,
-            }
-        })
-
+        if(event.target.id == 'image'){
+            setEdit({
+                ...edit,
+                product: {
+                    ...edit.product,
+                    "image": event.target.files[0],
+                }
+            })
+        }else{
+            setEdit({
+                ...edit,
+                product: {
+                    ...edit.product,
+                    [event.target.id]: event.target.value,
+                }
+            })
+        }
         console.log("after edit", edit);
     }
 

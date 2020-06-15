@@ -65,22 +65,30 @@ function AddProductFormDialog(props) {
         console.log(form)
     }
 
+    const onFileChange = (event)  => { 
+        // Update the state 
+        setForm({ ...form, [event.target.id]: event.target.files[0]});
+        console.log(form)
+    };
+
     const handleAddProduct = () => {
 
-        if(onCheckPropertiesEmpty(form)){
-            var dataForm = form;
-            const items = dataForm.image.split('\\');
-            if (items.length > 0)
-                dataForm.image = items[items.length - 1];
-            dataForm = JSON.parse(JSON.stringify(dataForm));
+        if (onCheckPropertiesEmpty(form)) {
+            var dataForm = new FormData();
 
+            for (var key in form) {
+                dataForm.append(key, form[key]);
+            }
             axios({
                 method: 'post',
                 url: 'http://127.0.0.1:8000/api/products',
                 data: dataForm,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
             })
                 .then(function (response) {
-                    console.log("response",response);
+                    console.log("response", response);
                     handleClose();
                     setProducts([...products, response.data]);
                 })
@@ -91,7 +99,7 @@ function AddProductFormDialog(props) {
                         text: 'Failed to add product !\nPlease try again .'
                     })
                 });
-        }else{
+        } else {
             setFormState({
                 status: 'error',
                 text: 'Please fill in required field'
@@ -107,6 +115,7 @@ function AddProductFormDialog(props) {
                 onClick={handleClickOpen}
                 style={{ backgroundColor: "#8bc34a", float: "right" }}
             >
+                <i className="fa fa-plus" aria-hidden="true"></i>
                 <i className="fa fa-plus" aria-hidden="true"></i>
             </Button>
 
@@ -162,7 +171,7 @@ function AddProductFormDialog(props) {
                         type="file"
                         required
                         // value={form.image}
-                        onChange={handleChange}
+                        onChange={onFileChange}
                         fullWidth />
                 </DialogContent>
                 <DialogActions>
