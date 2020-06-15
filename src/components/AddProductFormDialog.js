@@ -57,18 +57,26 @@ function AddProductFormDialog(props) {
         console.log(form)
     }
 
-    const handleAddProduct = () => {
+    const onFileChange = (event)  => { 
+        // Update the state 
+        setForm({ ...form, [event.target.id]: event.target.files[0]});
+        console.log(form)
+    };
 
-        var dataForm = form;
-        const items = dataForm.image.split('\\');
-        if (items.length > 0)
-            dataForm.image = items[items.length - 1];
-        dataForm = JSON.parse(JSON.stringify(dataForm));
+    const handleAddProduct = () => {
+        var dataForm = new FormData();
+
+        for ( var key in form ) {
+            dataForm.append(key, form[key]);
+        }
 
         axios({
             method: 'post',
             url: 'http://127.0.0.1:8000/api/products',
             data: dataForm,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
         })
             .then(function (response) {
                 console.log("response",response);
@@ -135,7 +143,7 @@ function AddProductFormDialog(props) {
                         label="Image"
                         type="file"
                         // value={form.image}
-                        onChange={handleChange}
+                        onChange={onFileChange}
                         fullWidth />
                 </DialogContent>
                 <DialogActions>

@@ -39,6 +39,14 @@ function EditProductFormDialog(props) {
     }
 
     const handleEditProduct = () => {
+        // axios({
+            //     method: 'post',
+            //     url: 'http://127.0.0.1:8000/api/products/' + "2",
+            //     data: dataForm,
+            //         headers: {
+            //             'Content-Type': 'multipart/form-data',
+            //         }
+            // })
         const dataForm = product;
         const items = dataForm.image.split('\\');
         if (items.length > 0)
