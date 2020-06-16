@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {addToCart } from '../actions/index';
-import {useDispatch} from "react-redux";
+import React, { useState } from 'react';
+import { addToCart } from '../actions/index';
+import { useDispatch } from "react-redux";
 
 const Product = (props) => {
     const [product, setproduct] = useState(props.product);
     const dispatch = useDispatch();
     React.useEffect(() => {
-        if(props) {
+        if (props) {
             setproduct(props.product);
         }
     }, [props]);
@@ -18,14 +18,12 @@ const Product = (props) => {
                         src={`http://127.0.0.1:8000${props.product.image}`}
                         className="img-fluid" alt={product.name}
                     />
-                    <a>
-                        <div className="mask waves-light waves-effect waves-light"></div>
-                    </a>
+                    <div className="mask waves-light waves-effect waves-light"></div>
                 </div>
                 <div className="card-body">
                     <h4 className="card-title">
                         <strong>
-                            <a>{product.name}</a>
+                            {product.name}
                         </strong>
                     </h4>
                     <p className="card-text">
@@ -34,14 +32,14 @@ const Product = (props) => {
                     <div className="card-footer">
                         <span className="left">{product.price}$</span>
                         <span className="right">
-                            <a className="btn-floating blue-gradient"
+                            <button className="btn-floating blue-gradient"
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 title=""
                                 data-original-title="Add to Cart"
                             >
                                 <i onClick={() => dispatch(addToCart(product))} className="fa fa-shopping-cart"></i>
-                            </a>
+                            </button>
                         </span>
                     </div>
                 </div>

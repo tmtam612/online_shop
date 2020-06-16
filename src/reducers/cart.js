@@ -5,7 +5,6 @@ var initialState = data ? data : [];
 const cartRedux = (state = initialState, action) => {
     var index = -1;
     var {product} = action;
-    console.log(action);
     var cart = [...state];
     switch (action.type) {
         case types.ADD_TO_CART:

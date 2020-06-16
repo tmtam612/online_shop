@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -10,19 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    tdimage: {
-        maxWidth: 100,
-        maxHeight: 100,
-        overflowX: "scroll",
-    }
-});
-
-
 
 function AddProductFormDialog(props) {
 
@@ -45,11 +30,6 @@ function AddProductFormDialog(props) {
     const [form, setForm] = React.useState(defaultFormAddValue);
     const [formState, setFormState] = React.useState(defaultFormState)
 
-    // React.useEffect(() => {
-    //     // setForm({...form,});
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [form]);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -62,13 +42,11 @@ function AddProductFormDialog(props) {
 
     const handleChange = (event) => {
         setForm({ ...form, [event.target.id]: event.target.value });
-        console.log(form)
     }
 
     const onFileChange = (event)  => { 
         // Update the state 
         setForm({ ...form, [event.target.id]: event.target.files[0]});
-        console.log(form)
     };
 
     const handleAddProduct = () => {
@@ -88,12 +66,10 @@ function AddProductFormDialog(props) {
                 }
             })
                 .then(function (response) {
-                    console.log("response", response);
                     handleClose();
                     setProducts([...products, response.data]);
                 })
                 .catch(function (error) {
-                    console.log(error);
                     setFormState({
                         status: 'error',
                         text: 'Failed to add product !\nPlease try again .'
@@ -115,7 +91,6 @@ function AddProductFormDialog(props) {
                 onClick={handleClickOpen}
                 style={{ backgroundColor: "#8bc34a", float: "right" }}
             >
-                <i className="fa fa-plus" aria-hidden="true"></i>
                 <i className="fa fa-plus" aria-hidden="true"></i>
             </Button>
 

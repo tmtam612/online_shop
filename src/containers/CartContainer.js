@@ -4,14 +4,12 @@ import CartItem from '../components/CartItem';
 import { useSelector} from "react-redux";
 
 const CartContainer = () => {
-    console.log(1);
     const [cart, setCart] = useState([]);
     const cartStore = useSelector( state => state.cart);
     React.useEffect(() => {
         setCart(cartStore);
     }, [cartStore]);
     const showCartItem = (cart) => {
-        console.log(cart);
         var result = <tr><td></td></tr>;
         if (cart.length > 0) {
             result = cart.map((item, index) => {
@@ -48,6 +46,7 @@ const CartContainer = () => {
             axios.post('http://127.0.0.1:8000/api/orders', order)
             .then(function (response) {
                 alert('thanh toán thành công');
+                setCart([]);
             })
             .catch(function (error) {
                 alert('thanh toán thất bại');

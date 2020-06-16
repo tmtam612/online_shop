@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -14,33 +12,17 @@ import axios from "axios";
 
 
 function EditProductFormDialog(props) {
-
-    console.log("edit props", props);
-
     const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts, onCheckPropertiesEmpty } = props;
 
     const { product } = edit;
 
-    const defaultFormState = {
-        status : 'info',
-        text: "Edit Product '"+product.id+"'"
-    }
-
-    // const handleChange = (event) => {
-    //     setForm({ ...form, [event.target.id]: event.target.value });
-    //     console.log(form)
-    // }
-
     const editProductElement = (e) => {
         var tempProd = products.map(item => {
-            if (item.id == e.id) {
+            if (item.id === e.id) {
                 item = e;
             }
             return item;
         });
-
-        console.log(tempProd);
-
         setProducts(tempProd);
     }
 
@@ -71,12 +53,10 @@ function EditProductFormDialog(props) {
                     }
             })
                 .then(function (response) {
-                    console.log("Edit response", response);
                     editProductElement(response.data);
                     onCloseEdit();
                 })
                 .catch(function (error) {
-                    console.log(error);
                     setEdit({
                         ...edit,
                         status: 'error',

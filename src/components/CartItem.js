@@ -32,14 +32,14 @@ const CartItem = (props) => {
                         btn-rounded waves-effect waves-light"
                         onClick={() => dispatch(updateProductInCart(item.product, item.quantity - 1))}
                     >
-                        <a href="#">—</a>
+                        —
                     </label>
                     <label 
                         className="btn btn-sm btn-primary
                         btn-rounded waves-effect waves-light"
                         onClick={() => dispatch(updateProductInCart(item.product, item.quantity + 1))}
                     >
-                        <a href="#">+</a>
+                        +
                     </label>
                 </div>
             </td>

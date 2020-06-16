@@ -1,8 +1,7 @@
 import React from 'react';
 import AddProductFormDialog from './AddProductFormDialog';
 import EditProductFormDialog from './EditProductFormDialog';
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -35,28 +34,26 @@ const useStyles = makeStyles({
 
 function ProductManageList(props) {
 
-    console.log("alooo", props);
-
     const { products, setProducts } = props;
     const classes = useStyles();
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [deleteDialog,setDeleteDialog] = React.useState({
+    const [deleteDialog, setDeleteDialog] = React.useState({
         open: false,
         id: ''
     })
     const [edit, setEdit] = React.useState({
         open: false,
         status: 'info',
-        text : 'Edit product',
+        text: 'Edit product',
         product: {},
     })
 
-    const checkPropertiesEmpty = obj =>{
-        for(var key in obj) {
-            if(obj[key] === "") {
-               return false;
+    const checkPropertiesEmpty = obj => {
+        for (var key in obj) {
+            if (obj[key] === "") {
+                return false;
             }
         }
         return true;
@@ -83,14 +80,14 @@ function ProductManageList(props) {
     const handleCloseEdit = () => {
         setEdit({
             ...edit,
-            status : 'info',
+            status: 'info',
             text: 'Edit product',
             open: false,
         })
     }
 
     const handleChangeEdit = (event) => {
-        if(event.target.id == 'image'){
+        if (event.target.id === 'image') {
             setEdit({
                 ...edit,
                 product: {
@@ -98,7 +95,7 @@ function ProductManageList(props) {
                     "image": event.target.files[0],
                 }
             })
-        }else{
+        } else {
             setEdit({
                 ...edit,
                 product: {
@@ -107,7 +104,6 @@ function ProductManageList(props) {
                 }
             })
         }
-        console.log("after edit", edit);
     }
 
     const handleOpenDeleteDialog = (id) => {
@@ -120,7 +116,7 @@ function ProductManageList(props) {
     const handleCloseDeleteDialog = () => {
         setDeleteDialog({
             ...deleteDialog,
-            open:false,
+            open: false,
         });
     }
 
@@ -129,7 +125,7 @@ function ProductManageList(props) {
             method: 'delete',
             url: 'http://127.0.0.1:8000/api/products/' + deleteDialog.id,
         }).then(function (response) {
-            const array = products.filter(item => item.id != deleteDialog.id);
+            const array = products.filter(item => item.id !== deleteDialog.id);
             setProducts(array);
             handleCloseDeleteDialog();
         })
@@ -141,16 +137,16 @@ function ProductManageList(props) {
         <div>
             <AddProductFormDialog
                 products={products}
-                setProducts={setProducts} 
+                setProducts={setProducts}
                 onCheckPropertiesEmpty={checkPropertiesEmpty}
-                />
+            />
             <EditProductFormDialog
                 products={products}
                 setProducts={setProducts}
                 edit={edit} setEdit={setEdit}
                 onCloseEdit={handleCloseEdit}
-                onChangeEdit={handleChangeEdit} 
-                onCheckPropertiesEmpty={checkPropertiesEmpty}/>
+                onChangeEdit={handleChangeEdit}
+                onCheckPropertiesEmpty={checkPropertiesEmpty} />
             <Dialog
                 open={deleteDialog.open}
                 onClose={handleCloseDeleteDialog}
@@ -159,16 +155,16 @@ function ProductManageList(props) {
             >
                 <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
                 <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete this product ?
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this product ?
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleCloseDeleteDialog} color="primary">
-                    No
+                    <Button onClick={handleCloseDeleteDialog} color="primary">
+                        No
                 </Button>
-                <Button onClick={handleDeleteProduct} color="primary" autoFocus>
-                    Yes
+                    <Button onClick={handleDeleteProduct} color="primary" autoFocus>
+                        Yes
                 </Button>
                 </DialogActions>
             </Dialog>
@@ -219,15 +215,17 @@ function ProductManageList(props) {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, 100]}
-                                component="div"
-                                count={products.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onChangePage={handleChangePage}
-                                onChangeRowsPerPage={handleChangeRowsPerPage}
-                            />
+                            <TableCell>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25, 100]}
+                                    component="div"
+                                    count={products.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                />
+                            </TableCell>
                         </TableRow>
                     </TableFooter>
                 </Table>
