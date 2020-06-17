@@ -8,10 +8,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
-
+import {useDispatch} from "react-redux";
+import {getListProducts} from '../actions/index';
 
 
 function EditProductFormDialog(props) {
+    const dispatch = useDispatch();
     const { edit, setEdit, onCloseEdit, onChangeEdit, products, setProducts, onCheckPropertiesEmpty } = props;
 
     const { product } = edit;
@@ -24,6 +26,11 @@ function EditProductFormDialog(props) {
             return item;
         });
         setProducts(tempProd);
+        axios.get("http://127.0.0.1:8000/api/products/")
+        .then((response) => { 
+            dispatch(getListProducts(response.data));
+        }).catch((err) => console.log('err', err));
+       
     }
 
     const handleEditProduct = () => {

@@ -24,3 +24,7 @@ export const updateProductInCart = (product, quantity) =>({
     product,
     quantity
 });
+
+export const resetProductInCart = () =>({
+    type: types.RESET_PRODUCT_IN_CART
+});

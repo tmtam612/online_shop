@@ -37,6 +37,9 @@ const cartRedux = (state = initialState, action) => {
                }
             }
             return cart;
+        case types.RESET_PRODUCT_IN_CART:
+            cart = [];
+            return cart;
         default:
             return state;
     }

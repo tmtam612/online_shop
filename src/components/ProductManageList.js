@@ -130,7 +130,6 @@ function ProductManageList(props) {
             handleCloseDeleteDialog();
         })
             .catch(function (error) {
-                console.log(error);
             });
     }
     return (
@@ -169,7 +168,7 @@ function ProductManageList(props) {
                 </DialogActions>
             </Dialog>
             <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+                <Table className={classes.table} >
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
@@ -230,7 +229,7 @@ function ProductManageList(props) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </div>
+        </>
     )
 }
 

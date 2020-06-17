@@ -9,14 +9,14 @@ function App() {
     const dispatch = useDispatch();
     const productStore = useSelector(state => state.products);
     const [products, setProducts] = useState([]);
-	const getProducts = useCallback(
-		(data) => dispatch(getListProducts(data)),
-		[dispatch],
-	);
+	// const getProducts = useCallback(
+	// 	(data) => 
+	// 	[dispatch],
+	// );
     React.useEffect(() => {
 		axios.get("http://127.0.0.1:8000/api/products/")
 			.then((response) => { 
-				getProducts(response.data);
+				dispatch(getListProducts(response.data));
 			}).catch((err) => console.log('err', err));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import CartItem from '../components/CartItem';
-import { useSelector} from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
+import { resetProductInCart} from '../actions/index';
 
 const CartContainer = () => {
     const [cart, setCart] = useState([]);
+    const dispatch = useDispatch();
     const cartStore = useSelector( state => state.cart);
     React.useEffect(() => {
         setCart(cartStore);
@@ -36,6 +38,7 @@ const CartContainer = () => {
         }
         return total;
     }
+    
     const saveBill = (cart) => {
         var order = {};
         if(cart.length > 0) {
@@ -45,8 +48,12 @@ const CartContainer = () => {
             order = JSON.stringify(order);
             axios.post('http://127.0.0.1:8000/api/orders', order)
             .then(function (response) {
-                alert('thanh toán thành công');
-                setCart([]);
+                if(response.data === 204) {
+                    alert("số lượng hàng không đủ để thanh toán");
+                } else {
+                    dispatch(resetProductInCart());
+                    alert('thanh toán thành công');
+                }
             })
             .catch(function (error) {
                 alert('thanh toán thất bại');

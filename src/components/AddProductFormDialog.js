@@ -8,9 +8,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
+import {useDispatch} from "react-redux";
+import {getListProducts} from '../actions/index';
+
+
 
 function AddProductFormDialog(props) {
 
+    const dispatch = useDispatch();
     const { products, setProducts , onCheckPropertiesEmpty } = props;
 
     const defaultFormAddValue = {
@@ -68,6 +73,10 @@ function AddProductFormDialog(props) {
                 .then(function (response) {
                     handleClose();
                     setProducts([...products, response.data]);
+                    axios.get("http://127.0.0.1:8000/api/products/")
+                    .then((response) => { 
+                        dispatch(getListProducts(response.data));
+                    }).catch((err) => console.log('err', err));
                 })
                 .catch(function (error) {
                     setFormState({
