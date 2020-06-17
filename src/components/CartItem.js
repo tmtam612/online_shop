@@ -32,7 +32,6 @@ const CartItem = (props) => {
         item.product.inventory+= item.quantity;
         dispatch(deleteProductInCart(item.product));
     }
-   console.log(item.quantity);
     return (
         <tr>
             <th scope="row">
