@@ -229,7 +229,7 @@ function ProductManageList(props) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </>
+        </div>
     )
 }
 
