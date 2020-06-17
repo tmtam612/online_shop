@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {getListProducts} from '../actions/index';
@@ -15,7 +16,7 @@ import {getListProducts} from '../actions/index';
 function AddProductFormDialog(props) {
 
     const dispatch = useDispatch();
-    const { products, setProducts } = props;
+    const { products, setProducts , onCheckPropertiesEmpty } = props;
 
     const defaultFormAddValue = {
         name: '',
@@ -25,13 +26,14 @@ function AddProductFormDialog(props) {
         inventory: '',
     }
 
+    const defaultFormState = {
+        status : 'info',
+        text: 'Add 1 more Product'
+    }
+
     const [open, setOpen] = React.useState(false);
     const [form, setForm] = React.useState(defaultFormAddValue);
-
-    // React.useEffect(() => {
-    //     // setForm({...form,});
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [form]);
+    const [formState, setFormState] = React.useState(defaultFormState)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,35 +42,54 @@ function AddProductFormDialog(props) {
     const handleClose = () => {
         setOpen(false);
         setForm(defaultFormAddValue);
+        setFormState(defaultFormState);
     };
 
     const handleChange = (event) => {
         setForm({ ...form, [event.target.id]: event.target.value });
     }
 
+    const onFileChange = (event)  => { 
+        // Update the state 
+        setForm({ ...form, [event.target.id]: event.target.files[0]});
+    };
+
     const handleAddProduct = () => {
 
-        var dataForm = form;
-        const items = dataForm.image.split('\\');
-        if (items.length > 0)
-            dataForm.image = items[items.length - 1];
-        dataForm = JSON.parse(JSON.stringify(dataForm));
+        if (onCheckPropertiesEmpty(form)) {
+            var dataForm = new FormData();
 
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:8000/api/products',
-            data: dataForm,
-        })
-            .then(function (response) {
-                handleClose();
-                setProducts([...products, response.data]);
-                axios.get("http://127.0.0.1:8000/api/products/")
-                .then((response) => { 
-                    dispatch(getListProducts(response.data));
-                }).catch((err) => console.log('err', err));
+            for (var key in form) {
+                dataForm.append(key, form[key]);
+            }
+            axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/products',
+                data: dataForm,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
             })
-            .catch(function (error) {
-            });
+                .then(function (response) {
+                    handleClose();
+                    setProducts([...products, response.data]);
+                    axios.get("http://127.0.0.1:8000/api/products/")
+                    .then((response) => { 
+                        dispatch(getListProducts(response.data));
+                    }).catch((err) => console.log('err', err));
+                })
+                .catch(function (error) {
+                    setFormState({
+                        status: 'error',
+                        text: 'Failed to add product !\nPlease try again .'
+                    })
+                });
+        } else {
+            setFormState({
+                status: 'error',
+                text: 'Please fill in required field'
+            })
+        }
 
     }
 
@@ -81,11 +102,14 @@ function AddProductFormDialog(props) {
             >
                 <i className="fa fa-plus" aria-hidden="true"></i>
             </Button>
+
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Product</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Add 1 more product.
+                        <Alert severity={formState.status}>
+                            {formState.text}
+                        </Alert>
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -94,6 +118,7 @@ function AddProductFormDialog(props) {
                         label="Name"
                         type="text"
                         fullWidth
+                        required
                         value={form.name}
                         onChange={handleChange} />
                     <TextField
@@ -101,6 +126,7 @@ function AddProductFormDialog(props) {
                         id="description"
                         label="Description"
                         type="text"
+                        required
                         value={form.description}
                         onChange={handleChange}
                         fullWidth />
@@ -109,6 +135,7 @@ function AddProductFormDialog(props) {
                         id="price"
                         label="Price"
                         type="number"
+                        required
                         value={form.price}
                         onChange={handleChange}
                         fullWidth />
@@ -117,6 +144,7 @@ function AddProductFormDialog(props) {
                         id="inventory"
                         label="Inventory"
                         type="number"
+                        required
                         value={form.inventory}
                         onChange={handleChange}
                         fullWidth />
@@ -125,8 +153,9 @@ function AddProductFormDialog(props) {
                         id="image"
                         label="Image"
                         type="file"
+                        required
                         // value={form.image}
-                        onChange={handleChange}
+                        onChange={onFileChange}
                         fullWidth />
                 </DialogContent>
                 <DialogActions>

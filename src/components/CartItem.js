@@ -52,14 +52,14 @@ const CartItem = (props) => {
                         btn-rounded waves-effect waves-light"
                         onClick={() => deleteProduct(item.product, item.quantity)}
                     >
-                        <a href="#">—</a>
+                        —
                     </label>
                     <label 
                         className="btn btn-sm btn-primary
                         btn-rounded waves-effect waves-light"
                         onClick={() => addProductInCart(item.product)}
                     >
-                        <a href="#">+</a>
+                        +
                     </label>
                 </div>
             </td>
