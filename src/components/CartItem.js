@@ -19,7 +19,7 @@ const CartItem = (props) => {
             dispatch(addToCart(product));
         }
     }
-    const deleteProductInCart = (product, quantity) => {
+    const deleteProduct = (product, quantity) => {
         if(quantity > 0) {
             product.inventory += 1;
             dispatch(updateProductInCart(product, quantity - 1));
@@ -27,7 +27,12 @@ const CartItem = (props) => {
             
         }
     }
-   
+
+    const deleteProducts = (item) => {
+        item.product.inventory+= item.quantity;
+        dispatch(deleteProductInCart(item.product));
+    }
+   console.log(item.quantity);
     return (
         <tr>
             <th scope="row">
@@ -46,7 +51,7 @@ const CartItem = (props) => {
                     <label 
                         className="btn btn-sm btn-primary
                         btn-rounded waves-effect waves-light"
-                        onClick={() => deleteProductInCart(item.product, item.quantity)}
+                        onClick={() => deleteProduct(item.product, item.quantity)}
                     >
                         <a href="#">—</a>
                     </label>
@@ -68,7 +73,7 @@ const CartItem = (props) => {
                     data-placement="top"
                     title=""
                     data-original-title="Remove item"
-                    onClick={()=> dispatch(deleteProductInCart(item.product))}
+                    onClick={()=> deleteProducts(item)}
                 >
                     X
                 </button>
