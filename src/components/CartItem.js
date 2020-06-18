@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {updateProductInCart, deleteProductInCart } from '../actions/index';
 import {addToCart } from '../actions/index';
 const CartItem = (props) => {

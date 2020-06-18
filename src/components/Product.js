@@ -37,7 +37,7 @@ const Product = (props) => {
                     </p>
                     <div className="card-footer">
                         <span className="left">{product.price}$</span>
-                        <span className="left">{product.inventory}</span>
+                        
                         <span className="right">
                             <button className="btn-floating blue-gradient"
                                 data-toggle="tooltip"
@@ -46,8 +46,11 @@ const Product = (props) => {
                                 data-original-title="Add to Cart"
                             >
                                 <i onClick={() => addProduct(product)} className="fa fa-shopping-cart"></i>
-                            </a>
+                            </button>
                         </span>
+                    </div>
+                    <div className="quantity" align="left">
+                        <span className="text-left">Số lượng: {product.inventory}</span>
                     </div>
                 </div>
             </div>
