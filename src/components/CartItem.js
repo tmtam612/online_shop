@@ -35,7 +35,7 @@ const CartItem = (props) => {
     return (
         <tr>
             <th scope="row">
-                <img src={`${process.env.PUBLIC_URL}/img/bff22bd75897b1c9e886.jpg`}
+                <img src={`http://127.0.0.1:8000${item.product.image}`}
                     alt={item.product.image} className="img-fluid z-depth-0" />
             </th>
             <td>
