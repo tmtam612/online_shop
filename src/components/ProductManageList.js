@@ -183,17 +183,17 @@ function ProductManageList(props) {
                     <TableBody>
                         {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((prod) => (
                             <TableRow key={prod.id}>
+                                <TableCell component="td" scope="row" align="right">
+                                    {prod.name}mask waves-light waves-effect waves-light
+                                </TableCell>
+                                <TableCell align="right">{prod.description}</TableCell>
+                                <TableCell align="right">{prod.inventory}</TableCell>
                                 <TableCell align="left">
                                 <img width={"200px;"}
                                     src={`http://127.0.0.1:8000${prod.image}`}
                                     className="img-fluid" alt={prod.name}
                                 />
                                  </TableCell>
-                                <TableCell component="td" scope="row" align="right">
-                                    {prod.name}mask waves-light waves-effect waves-light
-                                </TableCell>
-                                <TableCell align="right">{prod.description}</TableCell>
-                                <TableCell align="right">{prod.inventory}</TableCell>
                                 <TableCell align="right">{prod.price}</TableCell>
                                 <TableCell align="right">{prod.rating}</TableCell>
                                
