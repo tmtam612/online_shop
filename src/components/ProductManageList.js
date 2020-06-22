@@ -171,28 +171,25 @@ function ProductManageList(props) {
                 <Table className={classes.table} >
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="center">Description</TableCell>
-                            <TableCell align="center">Inventory</TableCell>
-                            <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Rating</TableCell>
-                            <TableCell align="center">Image</TableCell>
-                            <TableCell align="center">Action</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell align="right">Description</TableCell>
+                            <TableCell align="right">Inventory</TableCell>
+                            <TableCell align="right">Price</TableCell>
+                            <TableCell align="right">Rating</TableCell>
+                            <TableCell align="left">Image</TableCell>
+                            <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((prod) => (
                             <TableRow key={prod.id}>
                                 <TableCell component="td" scope="row" align="right">
-                                    {prod.name}mask waves-light waves-effect waves-light
+                                    {prod.name}
                                 </TableCell>
                                 <TableCell align="right">{prod.description}</TableCell>
                                 <TableCell align="right">{prod.inventory}</TableCell>
                                 <TableCell align="left">
-                                <img width={"200px;"}
-                                    src={`http://127.0.0.1:8000${prod.image}`}
-                                    className="img-fluid" alt={prod.name}
-                                />
+                                    <textarea disabled value={prod.image}></textarea>
                                  </TableCell>
                                 <TableCell align="right">{prod.price}</TableCell>
                                 <TableCell align="right">{prod.rating}</TableCell>

@@ -20,7 +20,7 @@ const Product = (props) => {
         <div className="col-lg-4 col-md-6 mb-r">
             <div className="card text-center card-cascade narrower">
                 <div className="view overlay hm-white-slight z-depth-1">
-                    <img width={"200px;"}
+                    <img
                         src={`http://127.0.0.1:8000${props.product.image}`}
                         className="img-fluid" alt={product.name}
                     />
