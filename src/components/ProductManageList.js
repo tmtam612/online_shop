@@ -188,12 +188,12 @@ function ProductManageList(props) {
                                 </TableCell>
                                 <TableCell align="right">{prod.description}</TableCell>
                                 <TableCell align="right">{prod.inventory}</TableCell>
-                                <TableCell align="left">
-                                    <textarea disabled value={prod.image}></textarea>
-                                 </TableCell>
                                 <TableCell align="right">{prod.price}</TableCell>
                                 <TableCell align="right">{prod.rating}</TableCell>
                                
+                                <TableCell align="left">
+                                    <textarea disabled value={prod.image}></textarea>
+                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="contained"
