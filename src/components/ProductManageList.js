@@ -18,6 +18,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
+import {useDispatch} from "react-redux"; 
+import {getListProducts} from '../actions/index';
 
 const useStyles = makeStyles({
     table: {
@@ -36,7 +38,7 @@ function ProductManageList(props) {
 
     const { products, setProducts } = props;
     const classes = useStyles();
-
+    const dispatch = useDispatch();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [deleteDialog, setDeleteDialog] = React.useState({
@@ -128,6 +130,10 @@ function ProductManageList(props) {
             const array = products.filter(item => item.id !== deleteDialog.id);
             setProducts(array);
             handleCloseDeleteDialog();
+            axios.get("http://127.0.0.1:8000/api/products/")
+            .then((response) => { 
+                dispatch(getListProducts(response.data));
+            }).catch((err) => console.log('err', err));
         })
             .catch(function (error) {
             });

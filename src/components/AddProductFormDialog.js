@@ -100,7 +100,7 @@ function AddProductFormDialog(props) {
                 onClick={handleClickOpen}
                 style={{ backgroundColor: "#8bc34a", float: "right" }}
             >
-                <i className="fa fa-plus" aria-hidden="true"></i>
+                <i className="fa fa-plus" aria-hidden="true"></i>Add
             </Button>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
